@@ -1,5 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- AstroLSP allows you to customize the features in AstroNvim's LSP configuration engine
 -- Configuration documentation can be found with `:h astrolsp`
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
@@ -19,21 +17,34 @@ return {
     },
     -- customize lsp formatting options
     formatting = {
+      filter = function(client)
+        if client.name == "typescript-tools" then
+          return false
+        end
+
+        -- only enable null-ls for javascript files
+        -- if vim.bo.filetype == "javascript" then
+        --   return client.name == "null-ls"
+        -- end
+
+        -- enable all other clients
+        return true
+      end,
       -- control auto formatting on save
       format_on_save = {
         enabled = true, -- enable or disable format on save globally
-        allow_filetypes = { -- enable format on save for specified filetypes only
-          -- "go",
-        },
-        ignore_filetypes = { -- disable format on save for specified filetypes
-          -- "python",
-        },
+        -- allow_filetypes = { -- enable format on save for specified filetypes only
+        --   -- "go",
+        -- },
+        -- ignore_filetypes = { -- disable format on save for specified filetypes
+        --   -- "python",
+        -- },
       },
       disabled = { -- disable formatting capabilities for the listed language servers
         -- disable lua_ls formatting capability if you want to use StyLua to format your lua code
         -- "lua_ls",
       },
-      timeout_ms = 1000, -- default format timeout
+      timeout_ms = 10000, -- default format timeout
       -- filter = function(client) -- fully override the default formatting function
       --   return true
       -- end
@@ -104,5 +115,45 @@ return {
       -- this would disable semanticTokensProvider for all clients
       -- client.server_capabilities.semanticTokensProvider = nil
     end,
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    config = function()
+      require("lsp_signature").setup({
+        bind = true, -- This is mandatory, otherwise border config won't get registered.
+        handler_opts = {
+          border = "rounded"
+        },
+        hint_prefix = "🔥 ",
+      })
+    end,
+  },
+  {
+    "lewis6991/hover.nvim",
+    config = function()
+        require("hover").setup {
+            init = function()
+                -- Require providers
+                require("hover.providers.lsp")
+                -- require('hover.providers.gh')
+                -- require('hover.providers.gh_user')
+                -- require('hover.providers.jira')
+                -- require('hover.providers.man')
+                -- require('hover.providers.dictionary')
+            end,
+            preview_opts = {
+                border = nil
+            },
+            -- Whether the contents of a currently open hover window should be moved
+            -- to a :h preview-window when pressing the hover keymap.
+            preview_window = false,
+            title = true
+        }
+
+        -- Setup keymaps
+        vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
+        vim.keymap.set("n", "gK", require("hover").hover_select, {desc = "hover.nvim (select)"})
+    end
   },
 }

@@ -1,5 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- Customize Mason plugins
 
 ---@type LazySpec
@@ -19,12 +17,16 @@ return {
   -- use mason-null-ls to configure Formatters/Linter installation for null-ls sources
   {
     "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     -- overrides `require("mason-null-ls").setup(...)`
     opts = function(_, opts)
+      opts.automatic_setup = true
       -- add more things to the ensure_installed table protecting against community packs modifying it
       opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
-        "prettier",
-        "stylua",
+        "docker-compose-language-server",
+        "dockerfile-language-server",
+        "eslint_d",
+        "tailwindcss-language-server",
         -- add more arguments for adding more null-ls sources
       })
     end,
@@ -35,7 +37,7 @@ return {
     opts = function(_, opts)
       -- add more things to the ensure_installed table protecting against community packs modifying it
       opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
-        "python",
+        -- "python",
         -- add more arguments for adding more debuggers
       })
     end,
