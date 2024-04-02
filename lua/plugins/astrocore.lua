@@ -72,6 +72,8 @@ return {
         ["<M-Down>"] = { function() require("smart-splits").resize_down() end, desc = "Resize split down" },
         ["<M-Left>"] = { function() require("smart-splits").resize_left() end, desc = "Resize split left" },
         ["<M-Right>"] = { function() require("smart-splits").resize_right() end, desc = "Resize split right" },
+        ["<Leader>lr"] = { ":lua vim.lsp.buf.rename()<cr>", desc = "Rename symbol" },
+        ["<Leader>lR"] = { ":TSToolsGoToSourceDefinition<cr>", desc = "Go to source definition" },
       },
       t = {
         -- setting a mapping to false will disable it
