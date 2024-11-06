@@ -27,6 +27,7 @@ return {
         "dockerfile-language-server",
         "eslint_d",
         "tailwindcss-language-server",
+        "prettierd",
         -- add more arguments for adding more null-ls sources
       })
     end,
