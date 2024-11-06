@@ -9,7 +9,7 @@ return {
   ---@type AstroLSPOpts
   opts = {
     -- Configuration table of features provided by AstroLSP
-    timeout_ms = 10000, -- default timeout for LSP requests
+    timeout_ms = 15000, -- default timeout for LSP requests
     features = {
       autoformat = true, -- enable or disable auto formatting on start
       codelens = true, -- enable/disable codelens refresh on start
